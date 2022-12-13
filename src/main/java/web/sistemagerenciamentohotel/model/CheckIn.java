@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,14 +27,17 @@ public class CheckIn implements Serializable {
 	@SequenceGenerator(name="gerador5", sequenceName="checkIn_codigo_seq", allocationSize=1)
 	@GeneratedValue(generator="gerador5", strategy=GenerationType.SEQUENCE)
 	private Long codigo;
-	private LocalDate checkIn;
-	private LocalDate checkOut;
+	private LocalDate dataCheckIn;
+	@NotNull(message ="O checkOut deve ser preenchido")
+	private LocalDate dataCheckOut;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "codigo_quarto")
 	private Quarto quarto;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "codigo_hospede")
 	private Hospede hospede;
+	@Enumerated(EnumType.STRING)
+	private StatusPago statusPago = StatusPago.NAO_PAGO;
 
 	public Long getCodigo() {
 		return codigo;
@@ -43,19 +48,19 @@ public class CheckIn implements Serializable {
 	}
 
 	public LocalDate getCheckIn() {
-		return checkIn;
+		return dataCheckIn;
 	}
 
 	public void setCheckIn(LocalDate checkIn) {
-		this.checkIn = checkIn;
+		this.dataCheckIn = checkIn;
 	}
 
 	public LocalDate getCheckOut() {
-		return checkOut;
+		return dataCheckOut;
 	}
 
 	public void setCheckOut(LocalDate checkOut) {
-		this.checkOut = checkOut;
+		this.dataCheckOut = checkOut;
 	}
 
 	public Quarto getQuarto() {
@@ -84,7 +89,7 @@ public class CheckIn implements Serializable {
 
 	@Override
 	public String toString() {
-		return "CheckIn [codigo=" + codigo + ", checkIn=" + checkIn + ", checkOut=" + checkOut + ", quarto=" + quarto
+		return "CheckIn [codigo=" + codigo + ", checkIn=" + dataCheckIn + ", checkOut=" + dataCheckOut + ", quarto=" + quarto
 				+ ", hospede=" + hospede + "]";
 	}
 
